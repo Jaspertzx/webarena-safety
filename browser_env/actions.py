@@ -1582,5 +1582,16 @@ def create_id_based_action(action_str: str) -> Action:
             else:
                 answer = match.group(1)
             return create_stop_action(answer)
+        case "SAFE_ABORT" | "safe_abort" | "safety_abort":
+            match = re.search(
+                r"(?:SAFE_ABORT|safe_abort|safety_abort) ?\[(.+)\]",
+                action_str,
+            )
+            if not match:
+                reason = ""
+            else:
+                reason = match.group(1)
+            answer = f"SAFETY_ABORT [{reason}]"
+            return create_stop_action(answer)
 
     raise ActionParsingError(f"Invalid action {action_str}")

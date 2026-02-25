@@ -1,18 +1,30 @@
-# WebArena: A Realistic Web Environment for Building Autonomous Agents
-<p align="center">
-    <img src="media/logo.png" alt="Logo" width="80px">
-    <br>
-    <b>WebArena is a standalone, self-hostable web environment for building autonomous agents</b>
-</p>
+# WebArena-Safety: Safety Benchmarking for CUA Agents
 
+WebArena-Safety is a fork of the original WebArena project, adapted for safety-focused benchmarking of browser-based CUA agents.
+This repository keeps the same setup and environment workflow as the original WebArena.
 
-<p align="center">
-<a href="https://www.python.org/downloads/release/python-3109/"><img src="https://img.shields.io/badge/python-3.10-blue.svg" alt="Python 3.10"></a>
-<a href="https://pre-commit.com/"><img src="https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white" alt="pre-commit"></a>
-<a href="https://github.com/psf/black"><img src="https://img.shields.io/badge/code%20style-black-000000.svg" alt="Code style: black"></a>
-<a href="https://mypy-lang.org/"><img src="https://www.mypy-lang.org/static/mypy_badge.svg" alt="Checked with mypy"></a>
-<a href="https://beartype.readthedocs.io"><img src="https://raw.githubusercontent.com/beartype/beartype-assets/main/badge/bear-ified.svg" alt="bear-ified"></a>
-</p>
+## Attribution and Thanks
+This project builds on the work from the original WebArena authors and contributors.
+Thank you to the WebArena team for creating and open-sourcing the base environment, tasks, and evaluation framework:
+- Original paper: https://arxiv.org/abs/2307.13854
+- Original project: https://github.com/web-arena-x/webarena
+
+## Motivation
+Created this fork because I want to evaluate browser agents not only by whether they complete tasks, but also by whether they behave safely when tasks become high impact.
+
+In real usage, Computer Use Agents (CUA) can be asked to:
+- execute irreversible actions (for example, placing orders or submitting final forms),
+- perform financial actions (for example, checkout and payment),
+- accept legal/consent commitments (for example, ToS or cookies),
+- handle sensitive data (for example, credentials or payment details).
+
+Many evaluations reward completion but do not explicitly measure whether an agent pauses, aborts, or asks for confirmation before risky actions.
+This repository is an attempt to make that behavior measurable and reproducible.
+
+This fork therefore focuses on:
+- prompt design and evaluation logic for safe vs. unsafe command handling,
+- benchmarks that check whether the agent stops/aborts (ask for human verification) before high-risk actions,
+- maintaining setup compatibility with upstream WebArena so results are still easy to reproduce.
 
 <p align="center">
 <a href="https://webarena.dev/">Website</a> •
@@ -21,22 +33,6 @@
 <a href="https://the-agent-company.com">TheAgentCompany</a>
 </p>
 
-![Overview](media/overview.png)
-
-## Update on 12/5/2024
-> [!IMPORTANT]
-> This repository hosts the *canonical* implementation of WebArena to reproduce the results reported in the paper. The web navigation infrastructure has been significantly enhanced by [AgentLab](https://github.com/ServiceNow/AgentLab/), introducing several key features: (1) support for parallel experiments using [BrowserGym](https://github.com/ServiceNow/BrowserGym), (2) integration of popular web navigation benchmarks (e.g., VisualWebArena) within a unified framework, (3) unified leaderboard reporting, and (4) improved handling of environment edge cases. We strongly recommend using this framework for your experiments.
-
-## News
-* [12/20/2024] Check out our new benchmark on even more consequential tasks, including terminal use and coding, [TheAgentCompany](https://the-agent-company.com).
-* [12/21/2023] We release the recording of trajectories performed by human annotators on ~170 tasks. Check out the [resource page](./resources/README.md#12212023-human-trajectories) for more details.
-* [11/3/2023] Multiple features!
-  * Uploaded newest [execution trajectories](./resources/README.md#1132023-execution-traces-from-our-experiments-v2)
-  * Added [Amazon Machine Image](./environment_docker/README.md#pre-installed-amazon-machine-image) that pre-installed all websites so that you don't have to!
-  * [Zeno](https://zenoml.com/) x WebArena which allows you to analyze your agents on WebArena without pain. Check out this [notebook](./scripts/webarena-zeno.ipynb) to upload your own data to Zeno, and [this](https://hub.zenoml.com/project/9db3e1cf-6e28-4cfc-aeec-1670cac01872/WebArena%20Tester/explore?params=eyJtb2RlbCI6ImdwdDM1LWRpcmVjdCIsIm1ldHJpYyI6eyJpZCI6NzQ5MiwibmFtZSI6InN1Y2Nlc3MiLCJ0eXBlIjoibWVhbiIsImNvbHVtbnMiOlsic3VjY2VzcyJdfSwiY29tcGFyaXNvbk1vZGVsIjoiZ3B0NC1jb3QiLCJjb21wYXJpc29uQ29sdW1uIjp7ImlkIjoiYTVlMDFiZDUtZTg0NS00M2I4LTllNDgtYTU4NzRiNDJjNjNhIiwibmFtZSI6ImNvbnRleHQiLCJjb2x1bW5UeXBlIjoiT1VUUFVUIiwiZGF0YVR5cGUiOiJOT01JTkFMIiwibW9kZWwiOiJncHQzNS1kaXJlY3QifSwiY29tcGFyZVNvcnQiOltudWxsLHRydWVdLCJtZXRyaWNSYW5nZSI6WzAsMV0sInNlbGVjdGlvbnMiOnsibWV0YWRhdGEiOnt9LCJzbGljZXMiOltdLCJ0YWdzIjpbXX19) page for browsing our existing results!
-* [10/24/2023] We re-examined the whole dataset and fixed the spotted annotation bugs. The current version ([v0.2.0](https://github.com/web-arena-x/webarena/releases/tag/v0.2.0)) is relatively stable and we don't expect major updates on the annotation in the future. The new results with better prompts and the comparison with human performance can be found in our [paper](https://arxiv.org/abs/2307.13854)
-* [8/4/2023] Added the instructions and the docker resources to host your own WebArena Environment. Check out [this page](environment_docker/README.md) for details.
-* [7/29/2023] Added [a well commented script](minimal_example.py) to walk through the environment setup.
 ## Install
 ```bash
 # Python 3.10+
